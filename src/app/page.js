@@ -1,95 +1,64 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client"
+import React, { useState } from "react";
 
-export default function Home() {
+export default function Main() {
+  const [url, setUrl] = useState("");
+  const [submittedUrl, setSubmittedUrl] = useState("");
+  const [animeData, setAnimeData] = useState(null);
+
+  async function submitUrl(e) {
+    e.preventDefault();
+    const submittedValue = e.target.elements.urlInput.value;
+    setUrl(submittedValue);
+    setSubmittedUrl(submittedValue);
+
+    const data = await getAnimeData(submittedValue);
+    setAnimeData(data);
+  }
+
+  async function getAnimeData(submittedValue) {
+    try {
+      const res = await fetch(
+        `https://api.trace.moe/search?url=${encodeURIComponent(submittedValue)}`,
+        { cache: "no-store" }
+      );
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching anime data:", error);
+      return null;
+    }
+  }
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main>
+      <div id="inputsearch">
+        <form onSubmit={submitUrl}>
+          <input
+            className="dog"
+            placeholder="Search"
+            name="urlInput"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+          />
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+
+      {animeData && (
+        <div id="animeData">
+          <h2>Anime Data</h2>
+          {animeData.result.map((item, index) => (
+            <div key={index}>
+              <video width="420" height="340" src={item.video} controls="true"></video> <br></br>
+              <h2>{item.filename}</h2>
+              <p>Duration (in seconds): {item.from} - {item.to}</p>
+              <p>Episode: {item.episode}</p>
+              <p>Similarity: {item.similarity}</p>
+            </div>
+          ))}
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      )}
     </main>
-  )
+  );
 }
