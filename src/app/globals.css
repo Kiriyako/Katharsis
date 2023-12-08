@@ -1,0 +1,20 @@
+body{
+    background-color: rgb(11,22,34);
+    color: rgb(224, 240, 254);
+    margin: 20px;
+    font-size: 20px;
+}
+
+.dog{
+    width: 500px;
+    height: 25px;
+    background-color: rgba(0, 0, 0, 0.507);
+    color: white;
+    border: white;
+    border-radius: 1rem;
+    border-width: 2px;
+    padding: 0.5rem;
+    font-size: 1.25rem;
+    font-family: inherit;
+}
+

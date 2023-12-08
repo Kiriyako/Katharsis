@@ -36,12 +36,12 @@ export default function Main() {
         <form onSubmit={submitUrl}>
           <input
             className="dog"
-            placeholder="Search"
+            placeholder="Paste the link of the scene you want to search for"
             name="urlInput"
             value={url}
+            autoComplete="off"
             onChange={(e) => setUrl(e.target.value)}
           />
-          <button type="submit">Submit</button>
         </form>
       </div>
 
