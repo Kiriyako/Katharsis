@@ -1,10 +1,10 @@
-import { Kanit } from 'next/font/google'
+import { Poppins } from 'next/font/google'
 import './globals.css'
 
-const inter = Kanit({ subsets: ['latin'], weight: ['200'] })
+const inter = Poppins({ subsets: ['latin'], weight: ['400'] })
 
 export const metadata = {
-  title: 'Katharsis',
+  title: 'anitrace',
 }
 
 export default function RootLayout({ children }) {

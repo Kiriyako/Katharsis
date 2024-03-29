@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from "react";
-
+import Link from "next/link";
 export default function Main() {
   const [url, setUrl] = useState("");
   const [submittedUrl, setSubmittedUrl] = useState("");
@@ -33,26 +33,55 @@ export default function Main() {
   return (
     <main>
       <div id="inputsearch">
+        <text id="heading"> anitrace </text> <br></br>
+        copy paste the link of the scene to trace back to
         <form onSubmit={submitUrl}>
+        <br></br>
+
           <input
             className="dog"
-            placeholder="Paste the link of the scene you want to search for"
+            placeholder="image url"
             name="urlInput"
             value={url}
             autoComplete="off"
             onChange={(e) => setUrl(e.target.value)}
           />
+                    <button
+            className="dog2"
+            type="submit"
+          >
+            <svg
+              stroke="currentColor"
+              fill="currentColor"
+              strokeWidth="0"
+              viewBox="0 0 16 16"
+              height="1em"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10.442 10.442a1 1 0 011.415 0l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1 1 0 010-1.415z"
+                clipRule="evenodd"
+              ></path>
+              <path
+                fillRule="evenodd"
+                d="M6.5 12a5.5 5.5 0 100-11 5.5 5.5 0 000 11zM13 6.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"
+                clipRule="evenodd"
+              ></path>
+            </svg>
+          </button>
         </form>
       </div>
 
       {animeData && (
         <div id="animeData">
-          <h2>Anime Data</h2>
+          <h2>Results</h2>
           {animeData.result.map((item, index) => (
             <div key={index}>
-              <video width="420" height="340" src={item.video} controls="true"></video> <br></br>
-              <h2>{item.filename}</h2>
-              <p>Duration (in seconds): {item.from} - {item.to}</p>
+              <video src={item.video} controls="true"></video> <br></br>
+             <Link href = {`https://anilist.co/anime/${item.anilist}`}>   <h3 id='linkk'>{item.filename}</h3> </Link>
+             <p>Timestamps: {Math.floor(item.from / 60)}:{Math.floor(item.from % 60)} - {Math.floor(item.to / 60)}:{Math.floor(item.to % 60)}</p>
               <p>Episode: {item.episode}</p>
               <p>Similarity: {item.similarity}</p>
             </div>
